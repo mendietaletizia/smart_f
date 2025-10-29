@@ -1,34 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { useState } from 'react'
+import { useAuth } from './hooks/useAuth.js'
+import { AppRouter } from './routers/AppRouter.jsx'
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const { user, loading, message, login, logout } = useAuth()
+  const [showRegister, setShowRegister] = useState(false)
+  
+  if (loading) return <div className="card">Cargando...</div>
+  
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <AppRouter 
+      user={user} 
+      onLogin={login} 
+      onLogout={logout} 
+      message={message}
+      showRegister={showRegister}
+      setShowRegister={setShowRegister}
+    />
   )
 }
 

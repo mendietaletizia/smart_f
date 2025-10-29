@@ -1,0 +1,208 @@
+/* ===========================================
+   REGISTER FORM STYLES
+   =========================================== */
+
+.register-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: var(--tienda-card-bg);
+  border-radius: var(--tienda-radius-lg);
+  box-shadow: var(--tienda-shadow-lg);
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.form-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--tienda-text-primary);
+  margin-bottom: 8px;
+}
+
+.form-header p {
+  font-size: 16px;
+  color: var(--tienda-text-secondary);
+  margin: 0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--tienda-text-primary);
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--tienda-border);
+  border-radius: var(--tienda-radius);
+  font-size: 14px;
+  background: var(--tienda-bg);
+  color: var(--tienda-text-primary);
+  transition: var(--tienda-transition);
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--tienda-blue-active);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group input::placeholder {
+  color: var(--tienda-text-secondary);
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.btn-primary {
+  background: var(--tienda-blue-active);
+  color: var(--tienda-text-white);
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--tienda-radius);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--tienda-transition);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary:hover {
+  background: var(--tienda-blue-hover);
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  background: var(--tienda-text-secondary);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background: var(--tienda-card-bg);
+  color: var(--tienda-text-primary);
+  border: 1px solid var(--tienda-border);
+  padding: 12px 24px;
+  border-radius: var(--tienda-radius);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--tienda-transition);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-secondary:hover {
+  background: var(--tienda-header-bg);
+  border-color: var(--tienda-blue-active);
+  color: var(--tienda-blue-active);
+}
+
+.error-message {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: #DC2626;
+  padding: 12px 16px;
+  border-radius: var(--tienda-radius);
+  font-size: 14px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.success-message {
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  color: #16A34A;
+  padding: 12px 16px;
+  border-radius: var(--tienda-radius);
+  font-size: 14px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .register-form {
+    margin: 0 16px;
+    padding: 24px 16px;
+  }
+  
+  .form-header h2 {
+    font-size: 24px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Shop container styles for RegisterPage */
+.shop {
+  min-height: 100vh;
+  background: var(--tienda-main-bg);
+  padding: 40px 20px;
+  margin: 0;
+}
+
+.shop .card {
+  background: var(--tienda-card-bg);
+  border-radius: var(--tienda-radius-lg);
+  padding: 24px;
+  box-shadow: var(--tienda-shadow);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.shop .card h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--tienda-text-primary);
+  margin-bottom: 12px;
+}
+
+.shop .card p {
+  font-size: 16px;
+  color: var(--tienda-text-secondary);
+  margin: 0;
+}
