@@ -54,10 +54,16 @@ export default function TiendaDashboardCSS({ user, onShowLogin, onShowRegister, 
 
     try {
       setAddingToCart(productoId)
-      await addToCarrito(productoId, 1)
+      setError('')
+      const result = await addToCarrito(productoId, 1)
       await loadCartCount()
+      // Mostrar notificación de éxito
+      if (result.message) {
+        console.log('✅', result.message)
+      }
     } catch (e) {
       console.error('Error adding to cart:', e)
+      setError(e.message || 'Error al agregar al carrito')
     } finally {
       setAddingToCart(null)
     }

@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useId, useRef, useState } from 'react'
 import { uploadImage, validateImageFile } from '../api/images.js'
 
 export default function ImageUpload({ onImageUploaded, currentImage = '' }) {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
   const [preview, setPreview] = useState(currentImage)
+  const inputId = useId()
+  const fileInputRef = useRef(null)
 
   async function handleFileChange(e) {
     const file = e.target.files[0]
@@ -48,24 +50,35 @@ export default function ImageUpload({ onImageUploaded, currentImage = '' }) {
     }
   }
 
+  function handleButtonClick(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (fileInputRef.current && !uploading) {
+      fileInputRef.current.click()
+    }
+  }
+
   return (
     <div className="image-upload">
       <div className="upload-section">
-        <input 
-          type="file" 
-          accept="image/*" 
+        <input
+          ref={fileInputRef}
+          id={inputId}
+          type="file"
+          accept="image/*"
           onChange={handleFileChange}
           disabled={uploading}
-          id="image-upload-input"
           style={{ display: 'none' }}
         />
-        
-        <label 
-          htmlFor="image-upload-input" 
+
+        <button
+          type="button"
+          onClick={handleButtonClick}
           className={`upload-button ${uploading ? 'uploading' : ''}`}
+          disabled={uploading}
         >
           {uploading ? '⏳ Subiendo...' : '📷 Subir Imagen'}
-        </label>
+        </button>
         
         <div className="upload-info">
           <small>Formatos: JPEG, PNG, GIF, WebP</small>

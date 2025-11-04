@@ -9,9 +9,13 @@ function buildQuery(params) {
 
 export async function listProducts(params = {}) {
   const query = buildQuery(params)
-  const res = await fetch(`/api/productos/${query}`, { credentials: 'include' })
+  const url = query ? `/api/productos/${query}` : '/api/productos/'
+  const res = await fetch(url, { credentials: 'include' })
   const data = await res.json().catch(() => ({ success: false }))
-  if (!res.ok || !data.success) throw new Error('No se pudo obtener productos')
+  if (!res.ok || !data.success) {
+    const errorMsg = data.message || 'No se pudo obtener productos'
+    throw new Error(errorMsg)
+  }
   return data
 }
 
@@ -46,6 +50,47 @@ export async function deleteProduct(id) {
   })
   const data = await res.json().catch(() => ({ success: false }))
   if (!res.ok || !data.success) throw new Error(data.message || 'No se pudo eliminar')
+  return data
+}
+
+export async function listCategorias() {
+  const res = await fetch('/api/productos/categorias/', { credentials: 'include' })
+  const data = await res.json().catch(() => ({ success: false }))
+  if (!res.ok || !data.success) throw new Error('No se pudieron obtener las categorías')
+  return data
+}
+
+export async function createCategoria(body) {
+  const res = await fetch('/api/productos/categorias/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(body)
+  })
+  const data = await res.json().catch(() => ({ success: false }))
+  if (!res.ok || !data.success) throw new Error(data.message || 'No se pudo crear la categoría')
+  return data
+}
+
+export async function updateCategoria(body) {
+  const res = await fetch('/api/productos/categorias/', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(body)
+  })
+  const data = await res.json().catch(() => ({ success: false }))
+  if (!res.ok || !data.success) throw new Error(data.message || 'No se pudo actualizar la categoría')
+  return data
+}
+
+export async function deleteCategoria(id) {
+  const res = await fetch(`/api/productos/categorias/?id=${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    credentials: 'include'
+  })
+  const data = await res.json().catch(() => ({ success: false }))
+  if (!res.ok || !data.success) throw new Error(data.message || 'No se pudo eliminar la categoría')
   return data
 }
 

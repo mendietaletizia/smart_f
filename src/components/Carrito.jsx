@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getCarrito, updateItemCarrito, removeFromCarrito, clearCarrito, saveForLater, applyDiscount } from '../api/carrito.js'
 import Checkout from './Checkout.jsx'
+import './Carrito.css'
 
 export default function Carrito({ isOpen, onClose }) {
   const [carrito, setCarrito] = useState(null)
@@ -9,6 +10,17 @@ export default function Carrito({ isOpen, onClose }) {
   const [showDiscountForm, setShowDiscountForm] = useState(false)
   const [discountCode, setDiscountCode] = useState('')
   const [showCheckout, setShowCheckout] = useState(false)
+  
+  // Limpiar error después de 5 segundos
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(''), 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [error])
+  
+  // Determinar si necesita scroll (más de 2 productos)
+  const needsScroll = carrito && carrito.items && carrito.items.length > 2
 
   async function loadCarrito() {
     try {
@@ -105,27 +117,31 @@ export default function Carrito({ isOpen, onClose }) {
     <div className="carrito-overlay" onClick={onClose}>
       <div className="carrito-panel" onClick={e => e.stopPropagation()}>
         <div className="carrito-header">
-          <h2>🛒 Mi Carrito</h2>
-          <button onClick={onClose} className="close-btn">✕</button>
+          <h2>Mi Carrito</h2>
+          <button onClick={onClose} className="close-btn" aria-label="Cerrar carrito">✕</button>
         </div>
 
         {loading && <div className="loading">Cargando carrito...</div>}
-        {error && <div className="error">{error}</div>}
+        {error && (
+          <div className="error-container">
+            <div className="error">{error}</div>
+          </div>
+        )}
 
         {carrito && (
           <>
             <div className="carrito-summary">
               <div className="summary-item">
-                <span>Total items:</span>
-                <span className="total-items">{carrito.total_items}</span>
+                <span>Total de productos</span>
+                <span className="total-items">{carrito.total_items} {carrito.total_items === 1 ? 'item' : 'items'}</span>
               </div>
               <div className="summary-item">
-                <span>Total:</span>
-                <span className="total-price">${carrito.total_precio.toFixed(2)}</span>
+                <span>Total a pagar</span>
+                <span className="total-price">Bs. {carrito.total_precio.toFixed(2)}</span>
               </div>
             </div>
 
-            <div className="carrito-items">
+            <div className={`carrito-items ${!needsScroll ? 'no-scroll' : ''}`}>
               {carrito.items.length === 0 ? (
                 <div className="empty-cart">
                   <p>Tu carrito está vacío</p>
@@ -144,7 +160,7 @@ export default function Carrito({ isOpen, onClose }) {
                     
                     <div className="item-details">
                       <h4>{item.producto_nombre}</h4>
-                      <p className="item-price">${item.precio_unitario.toFixed(2)} c/u</p>
+                      <p className="item-price">Bs. {item.precio_unitario.toFixed(2)} c/u</p>
                     </div>
                     
                     <div className="item-controls">
@@ -153,41 +169,45 @@ export default function Carrito({ isOpen, onClose }) {
                           onClick={() => handleUpdateQuantity(item.id, item.cantidad - 1)}
                           disabled={loading || item.cantidad <= 1}
                           className="qty-btn"
+                          aria-label="Reducir cantidad"
                         >
-                          -
+                          −
                         </button>
                         <span className="quantity">{item.cantidad}</span>
                         <button 
                           onClick={() => handleUpdateQuantity(item.id, item.cantidad + 1)}
                           disabled={loading}
                           className="qty-btn"
+                          aria-label="Aumentar cantidad"
                         >
                           +
                         </button>
                       </div>
-                      
-                      <div className="item-subtotal">
-                        ${item.subtotal.toFixed(2)}
-                      </div>
-                      
-                      <div className="item-actions">
-                        <button 
-                          onClick={() => handleSaveForLater(item.id)}
-                          disabled={loading}
-                          className="save-btn"
-                          title="Guardar para más tarde"
-                        >
-                          💾
-                        </button>
-                        <button 
-                          onClick={() => handleRemoveItem(item.id)}
-                          disabled={loading}
-                          className="remove-btn"
-                          title="Eliminar del carrito"
-                        >
-                          🗑️
-                        </button>
-                      </div>
+                    </div>
+                    
+                    <div className="item-subtotal">
+                      Bs. {item.subtotal.toFixed(2)}
+                    </div>
+                    
+                    <div className="item-actions">
+                      <button 
+                        onClick={() => handleSaveForLater(item.id)}
+                        disabled={loading}
+                        className="save-btn"
+                        title="Guardar para más tarde"
+                        aria-label="Guardar para más tarde"
+                      >
+                        💾
+                      </button>
+                      <button 
+                        onClick={() => handleRemoveItem(item.id)}
+                        disabled={loading}
+                        className="remove-btn"
+                        title="Eliminar del carrito"
+                        aria-label="Eliminar del carrito"
+                      >
+                        🗑️
+                      </button>
                     </div>
                   </div>
                 ))
@@ -198,14 +218,15 @@ export default function Carrito({ isOpen, onClose }) {
               <>
                 {/* CU9: Sección de gestión avanzada */}
                 <div className="carrito-management">
-                  <h4>Gestión del Carrito</h4>
+                  <h4>Opciones del Carrito</h4>
                   
                   <div className="management-actions">
                     <button 
                       onClick={() => setShowDiscountForm(!showDiscountForm)}
                       className="btn-secondary"
                     >
-                      🎟️ Aplicar Descuento
+                      <span>🎟️</span>
+                      <span>Aplicar Descuento</span>
                     </button>
                     
                     <button 
@@ -213,7 +234,8 @@ export default function Carrito({ isOpen, onClose }) {
                       disabled={loading}
                       className="btn-danger"
                     >
-                      🗑️ Limpiar Carrito
+                      <span>🗑️</span>
+                      <span>Limpiar Carrito</span>
                     </button>
                   </div>
 
@@ -247,7 +269,8 @@ export default function Carrito({ isOpen, onClose }) {
                     className="btn-primary btn-large"
                     onClick={() => setShowCheckout(true)}
                   >
-                    🛒 Proceder al Checkout
+                    <span>🛒</span>
+                    <span>Proceder al Checkout</span>
                   </button>
                 </div>
               </>

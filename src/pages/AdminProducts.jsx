@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { listProducts, createProduct, updateProduct, deleteProduct } from '../api/products.js'
+import { listProducts, createProduct, updateProduct, deleteProduct, listCategorias } from '../api/products.js'
 import ImageUpload from '../components/ImageUpload.jsx'
 
 export default function AdminProducts() {
@@ -19,6 +19,7 @@ export default function AdminProducts() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [viewItem, setViewItem] = useState(null)
+  const [categorias, setCategorias] = useState([])
 
   async function reload() {
     try {
@@ -33,7 +34,19 @@ export default function AdminProducts() {
     }
   }
 
-  useEffect(() => { reload() }, [])
+  useEffect(() => { 
+    reload()
+    loadCategorias()
+  }, [])
+
+  async function loadCategorias() {
+    try {
+      const { categorias } = await listCategorias()
+      setCategorias(categorias || [])
+    } catch (e) {
+      console.error('Error al cargar categorías:', e)
+    }
+  }
 
   async function onSubmit(e){
     e.preventDefault()
@@ -187,11 +200,18 @@ export default function AdminProducts() {
           
           <label>
             Categoría
-            <input 
+            <select 
               value={form.categoria} 
-              onChange={e=>setForm({ ...form, categoria:e.target.value })} 
-              placeholder="Ej: Tecnología"
-            />
+              onChange={e=>setForm({ ...form, categoria:e.target.value })}
+              style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+            >
+              <option value="">Seleccione una categoría</option>
+              {categorias.map(cat => (
+                <option key={cat.id} value={cat.nombre}>
+                  {cat.nombre}
+                </option>
+              ))}
+            </select>
           </label>
           
           <label>

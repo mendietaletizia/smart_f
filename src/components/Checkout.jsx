@@ -72,16 +72,16 @@ export default function Checkout({ isOpen, onClose, carrito, onCompraExitosa }) 
           <div className="checkout-summary">
             <h3>Resumen de tu compra</h3>
             <div className="summary-items">
-              {carrito.items.map(item => (
-                <div key={item.id_item} className="summary-item">
-                  <span className="item-name">{item.producto.nombre}</span>
+              {carrito && carrito.items && carrito.items.map(item => (
+                <div key={item.id} className="summary-item">
+                  <span className="item-name">{item.producto_nombre}</span>
                   <span className="item-quantity">x{item.cantidad}</span>
-                  <span className="item-price">${item.get_subtotal().toFixed(2)}</span>
+                  <span className="item-price">${item.subtotal.toFixed(2)}</span>
                 </div>
               ))}
             </div>
             <div className="summary-total">
-              <strong>Total: ${carrito.total_precio.toFixed(2)}</strong>
+              <strong>Total: ${carrito ? carrito.total_precio.toFixed(2) : '0.00'}</strong>
             </div>
           </div>
 

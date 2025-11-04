@@ -45,7 +45,8 @@ export async function updateItemCarrito(itemId, cantidad) {
 
 export async function removeFromCarrito(itemId) {
   const query = buildQuery({ item_id: itemId })
-  const res = await fetch(`/api/ventas/carrito/${query}`, {
+  const url = query ? `/api/ventas/carrito/${query}` : '/api/ventas/carrito/'
+  const res = await fetch(url, {
     method: 'DELETE',
     credentials: 'include'
   })
