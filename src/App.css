@@ -30,15 +30,21 @@
    =========================================== */
 
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .app-container {
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
   background: var(--gray-50);
+  box-sizing: border-box;
 }
 
 .card {
@@ -170,8 +176,10 @@
 
 .cliente-content {
   padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .cliente-content h2 {
@@ -248,10 +256,6 @@
    =========================================== */
 
 @media (max-width: 768px) {
-  #root {
-    padding: 1rem;
-  }
-  
   .cliente-header {
     padding: 1rem;
     flex-direction: column;

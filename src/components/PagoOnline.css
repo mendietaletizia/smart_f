@@ -1,0 +1,212 @@
+.pago-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.pago-modal {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.pago-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.pago-modal-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.pago-modal-close {
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.pago-modal-close:hover {
+  color: #333;
+}
+
+.pago-modal-body {
+  padding: 20px;
+}
+
+.pago-venta-info {
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.pago-venta-info p {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.pago-error {
+  background: #fee;
+  color: #c33;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border: 1px solid #fcc;
+}
+
+.pago-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pago-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pago-form-group label {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.pago-form-group input {
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.pago-form-group input:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+.pago-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.pago-form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.pago-form-actions button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pago-form-actions button[type="button"] {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.pago-form-actions button[type="button"]:hover {
+  background: #e0e0e0;
+}
+
+.pago-form-actions button[type="submit"] {
+  background: #4CAF50;
+  color: white;
+}
+
+.pago-form-actions button[type="submit"]:hover {
+  background: #45a049;
+}
+
+.pago-form-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.pago-success {
+  text-align: center;
+  padding: 20px;
+}
+
+.pago-success-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #4CAF50;
+  color: white;
+  font-size: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.pago-success h3 {
+  color: #4CAF50;
+  margin: 0 0 20px;
+  font-size: 24px;
+}
+
+.pago-success-details {
+  background: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.pago-success-details p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.pago-success-button {
+  padding: 12px 32px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pago-success-button:hover {
+  background: #45a049;
+}
+
+

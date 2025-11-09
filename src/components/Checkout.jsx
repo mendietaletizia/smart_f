@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
-import { realizarCompra } from '../api/carrito.js'
+import StripePaymentForm from './StripePaymentForm.jsx'
 import './Checkout.css'
 
 export default function Checkout({ isOpen, onClose, carrito, onCompraExitosa, onCloseCarrito }) {
   const [form, setForm] = useState({
-    metodo_pago: 'efectivo',
     // Campos de dirección
     avenida_calle: '',
     barrio: '',
@@ -19,6 +18,8 @@ export default function Checkout({ isOpen, onClose, carrito, onCompraExitosa, on
   const [ventaData, setVentaData] = useState(null)
   const [carritoSnapshot, setCarritoSnapshot] = useState(null) // Guardar copia del carrito
   const successBodyRef = useRef(null) // Referencia para el body de confirmación
+  const [showStripeForm, setShowStripeForm] = useState(false) // Mostrar formulario de Stripe
+  const [stripeData, setStripeData] = useState(null) // Datos para Stripe (dirección, etc.)
 
   // Limpiar estado SOLO cuando el modal se cierra completamente
   // No limpiar cuando success está activo para mantener la vista de confirmación
@@ -29,7 +30,6 @@ export default function Checkout({ isOpen, onClose, carrito, onCompraExitosa, on
       setCarritoSnapshot(null)
       setError('')
       setForm({
-        metodo_pago: 'efectivo',
         avenida_calle: '',
         barrio: '',
         departamento: '',
@@ -37,6 +37,8 @@ export default function Checkout({ isOpen, onClose, carrito, onCompraExitosa, on
         telefono_2: '',
         notas: ''
       })
+      setShowStripeForm(false)
+      setStripeData(null)
     }
   }, [isOpen, success])
 
@@ -91,32 +93,13 @@ export default function Checkout({ isOpen, onClose, carrito, onCompraExitosa, on
       const telefonos = [form.telefono_1, form.telefono_2].filter(t => t.trim()).join(', ')
       const direccionCompleta = `${form.avenida_calle}, ${form.barrio}, ${form.departamento}${telefonos ? `. Teléfonos: ${telefonos}` : ''}`
       
-      // Preparar datos para enviar al backend (mantener compatibilidad)
-      const datosCompra = {
-        metodo_pago: form.metodo_pago,
+      // Siempre usar Stripe como método de pago
+      setStripeData({
         direccion_entrega: direccionCompleta,
-        notas: form.notas,
-        // También enviar campos separados por si el backend los necesita
-        direccion_detallada: {
-          avenida_calle: form.avenida_calle,
-          barrio: form.barrio,
-          departamento: form.departamento,
-          telefono_1: form.telefono_1,
-          telefono_2: form.telefono_2
-        }
-      }
-
-      const result = await realizarCompra(datosCompra)
-      
-      // Establecer datos de la venta y estado de éxito
-      setVentaData(result.venta)
-      setSuccess(true)
-      
-      // Llamar callback de éxito pero NO cerrar automáticamente
-      // El usuario verá la confirmación y decidirá cuándo cerrar
-        if (onCompraExitosa) {
-          onCompraExitosa(result.venta)
-        }
+        notas: form.notas
+      })
+      setShowStripeForm(true)
+      setLoading(false)
 
     } catch (err) {
       setError(err.message)
@@ -132,7 +115,6 @@ export default function Checkout({ isOpen, onClose, carrito, onCompraExitosa, on
       setSuccess(false)
       setVentaData(null)
       setForm({
-        metodo_pago: 'efectivo',
         avenida_calle: '',
         barrio: '',
         departamento: '',
@@ -140,6 +122,8 @@ export default function Checkout({ isOpen, onClose, carrito, onCompraExitosa, on
         telefono_2: '',
         notas: ''
       })
+      setShowStripeForm(false)
+      setStripeData(null)
     }
     onClose()
   }
@@ -149,7 +133,6 @@ export default function Checkout({ isOpen, onClose, carrito, onCompraExitosa, on
     setVentaData(null)
     setCarritoSnapshot(null)
     setForm({
-      metodo_pago: 'efectivo',
       avenida_calle: '',
       barrio: '',
       departamento: '',
@@ -157,6 +140,8 @@ export default function Checkout({ isOpen, onClose, carrito, onCompraExitosa, on
       telefono_2: '',
       notas: ''
     })
+    setShowStripeForm(false)
+    setStripeData(null)
     onClose()
     // Si hay una función para cerrar el carrito también, llamarla
     if (onCloseCarrito) {
@@ -368,6 +353,17 @@ export default function Checkout({ isOpen, onClose, carrito, onCompraExitosa, on
 
             {/* Botón de cerrar */}
             <div className="checkout-actions checkout-success-actions">
+              {ventaData && form.metodo_pago === 'tarjeta' && (
+                <button 
+                  type="button" 
+                  onClick={() => setShowPagoOnline(true)}
+                  className="btn-checkout-secondary"
+                  style={{ marginRight: '10px' }}
+                >
+                  <span>💳</span>
+                  <span>Pagar en Línea</span>
+                </button>
+              )}
               <button 
                 type="button" 
                 onClick={handleCloseSuccess}
@@ -448,27 +444,16 @@ export default function Checkout({ isOpen, onClose, carrito, onCompraExitosa, on
           </div>
 
           {/* Formulario de checkout */}
+          {!showStripeForm ? (
           <form onSubmit={handleSubmit} className="checkout-form">
             <div className="checkout-section">
               <h3 className="section-title">
                 <span className="section-icon">💳</span>
-                Método de Pago
+                Pago con Tarjeta (Stripe)
               </h3>
-            <div className="form-group">
-                <label className="form-label">
-                  Selecciona tu método de pago preferido *
-                </label>
-                <select 
-                  value={form.metodo_pago} 
-                  onChange={(e) => setForm({ ...form, metodo_pago: e.target.value })}
-                  className="form-select"
-                  required
-                >
-                  <option value="efectivo">💵 Efectivo</option>
-                  <option value="tarjeta">💳 Tarjeta de Crédito/Débito</option>
-                  <option value="transferencia">🏦 Transferencia Bancaria</option>
-                </select>
-              </div>
+              <p style={{ margin: '0 0 16px 0', color: '#6B7280', fontSize: '14px' }}>
+                Tu pago será procesado de forma segura mediante Stripe
+              </p>
             </div>
 
             <div className="checkout-section">
@@ -596,12 +581,12 @@ export default function Checkout({ isOpen, onClose, carrito, onCompraExitosa, on
                 {loading ? (
                   <>
                     <span className="spinner"></span>
-                    <span>Procesando compra...</span>
+                    <span>Procesando...</span>
                   </>
                 ) : (
                   <>
-                    <span>✅</span>
-                    <span>Confirmar Compra</span>
+                    <span>💳</span>
+                    <span>Continuar con el Pago</span>
                   </>
                 )}
               </button>
@@ -616,8 +601,47 @@ export default function Checkout({ isOpen, onClose, carrito, onCompraExitosa, on
               </button>
             </div>
           </form>
+          ) : (
+            /* Formulario de Stripe */
+            <div className="stripe-form-container">
+              <StripePaymentForm
+                direccionEntrega={stripeData?.direccion_entrega || ''}
+                notas={stripeData?.notas || ''}
+                total={subtotal}
+                onSuccess={(result) => {
+                  // Pago exitoso
+                  setVentaData({
+                    id_venta: result.venta_id,
+                    total: subtotal,
+                    estado: 'completada',
+                    metodo_pago: 'stripe'
+                  })
+                  setSuccess(true)
+                  setShowStripeForm(false)
+                  if (onCompraExitosa) {
+                    onCompraExitosa({
+                      id_venta: result.venta_id,
+                      total: subtotal,
+                      estado: 'completada',
+                      metodo_pago: 'stripe'
+                    })
+                  }
+                }}
+                onError={(err) => {
+                  setError(err.message || 'Error al procesar el pago')
+                  setShowStripeForm(false)
+                }}
+                onCancel={() => {
+                  setShowStripeForm(false)
+                  setStripeData(null)
+                  setError('')
+                }}
+              />
+            </div>
+          )}
         </div>
       </div>
+      
     </div>
   )
 }

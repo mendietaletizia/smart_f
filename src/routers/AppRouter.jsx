@@ -4,6 +4,8 @@ import AdminProducts from '../pages/AdminProducts.jsx'
 import RegisterPage from '../pages/RegisterPage.jsx'
 import TiendaDashboardCSS from '../pages/TiendaDashboardCSS.jsx'
 import AdminDashboard from '../pages/AdminDashboard.jsx'
+import HistorialVentas from '../components/HistorialVentas.jsx'
+import ReportesDinamicos from '../components/ReportesDinamicos.jsx'
 import '../pages/TiendaDashboard.css'
 import '../pages/ClienteDashboard.css'
 
@@ -30,12 +32,28 @@ function AppRouterContent({ user, onLogin, onLogout, message, showRegister, setS
           >
             👤 Mi Cuenta
           </button>
+          <button
+            className={currentView === 'historial' ? 'active' : ''}
+            onClick={() => setCurrentView('historial')}
+          >
+            📊 Historial
+          </button>
+          <button
+            className={currentView === 'reportes' ? 'active' : ''}
+            onClick={() => setCurrentView('reportes')}
+          >
+            📈 Reportes
+          </button>
           <button onClick={onLogout} className="btn-logout">
             🚪 Cerrar Sesión
           </button>
         </div>
       </div>
       <div className="cliente-content">
+        {currentView === 'historial' && <HistorialVentas />}
+        {currentView === 'reportes' && <ReportesDinamicos />}
+        {currentView === 'cliente' && (
+          <>
         <h2>Panel del Cliente</h2>
         <p>Bienvenido, {user.nombre}!</p>
         <p>Aquí podrás gestionar tu perfil, ver tu historial de compras y más.</p>
@@ -182,6 +200,14 @@ function AppRouterContent({ user, onLogin, onLogout, message, showRegister, setS
             <span>Soporte</span>
           </button>
         </div>
+          </>
+        )}
+        {currentView === 'tienda' && (
+          <div style={{ padding: '20px' }}>
+            <p>Redirigiendo a la tienda...</p>
+            <button onClick={() => navigate('/')}>Ir a Tienda</button>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -227,6 +253,30 @@ function AppRouterContent({ user, onLogin, onLogout, message, showRegister, setS
               user={user}
               onLogout={onLogout}
             />
+          ) : (
+            <Navigate to="/" replace />
+          )
+        } 
+      />
+      
+      {/* Ruta de historial de ventas */}
+      <Route 
+        path="/historial" 
+        element={
+          user ? (
+            <HistorialVentas />
+          ) : (
+            <Navigate to="/" replace />
+          )
+        } 
+      />
+      
+      {/* Ruta de reportes dinámicos */}
+      <Route 
+        path="/reportes" 
+        element={
+          user ? (
+            <ReportesDinamicos />
           ) : (
             <Navigate to="/" replace />
           )

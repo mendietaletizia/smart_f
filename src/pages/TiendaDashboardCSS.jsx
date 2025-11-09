@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, ShoppingCart, Menu, X, TrendingUp, Zap, Shield, LogIn, Heart, Eye, Filter } from 'lucide-react'
+import { Search, ShoppingCart, Menu, X, TrendingUp, Zap, Shield, LogIn, Heart, Eye, Filter, Sparkles } from 'lucide-react'
 import { listProducts } from '../api/products.js'
 import { getCarrito, addToCarrito } from '../api/carrito.js'
 import Carrito from '../components/Carrito.jsx'
@@ -95,12 +95,12 @@ export default function TiendaDashboardCSS({ user, onShowLogin, onShowRegister, 
   return (
     <div className="tienda-moderna">
       {/* Header */}
-      <header className="header-moderno">
+      <header className="header-moderno animate-slide-down">
         <div className="header-container">
           <div className="header-content">
             {/* Logo */}
-            <div className="logo-container">
-              <div className="logo-icon">
+            <div className="logo-container hover-lift">
+              <div className="logo-icon shine-effect">
                 <Zap className="logo-svg" />
               </div>
               <div>
@@ -128,11 +128,11 @@ export default function TiendaDashboardCSS({ user, onShowLogin, onShowRegister, 
               {/* Carrito */}
               <button
                 onClick={() => setShowCarrito(true)}
-                className="cart-button"
+                className="cart-button hover-lift"
               >
                 <ShoppingCart className="cart-icon" />
                 {cartCount > 0 && (
-                  <span className="cart-badge">
+                  <span className="cart-badge animate-scale-in">
                     {cartCount}
                   </span>
                 )}
@@ -253,7 +253,7 @@ export default function TiendaDashboardCSS({ user, onShowLogin, onShowRegister, 
       </header>
 
       {/* Welcome Banner - Más pequeño y elegante */}
-      <div className="welcome-banner">
+      <div className="welcome-banner animate-slide-up">
         <div className="welcome-container">
           <div className="welcome-content">
             <h2 className="welcome-title">
@@ -267,18 +267,19 @@ export default function TiendaDashboardCSS({ user, onShowLogin, onShowRegister, 
       </div>
 
       {/* Categories */}
-      <div className="categories-section">
+      <div className="categories-section animate-fade-in">
         <div className="categories-container">
           <div className="categories-list">
-            {categories.map((cat) => (
+            {categories.map((cat, index) => (
               <button
                 key={cat}
                 onClick={() => setCategory(cat)}
-                className={`category-button ${
+                className={`category-button hover-lift ${
                   category === cat
                     ? 'category-button-active'
                     : ''
                 }`}
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {cat}
               </button>
@@ -288,8 +289,8 @@ export default function TiendaDashboardCSS({ user, onShowLogin, onShowRegister, 
       </div>
 
       {/* Products Section */}
-      <div className="products-section">
-        <div className="products-header">
+      <div className="products-section animate-fade-in">
+        <div className="products-header animate-slide-up">
           <div>
             <h3 className="products-title">
               Productos destacados
@@ -329,10 +330,11 @@ export default function TiendaDashboardCSS({ user, onShowLogin, onShowRegister, 
           </div>
         ) : (
           <div className="products-grid">
-            {filteredProductos.map((producto) => (
+            {filteredProductos.map((producto, index) => (
               <div
                 key={producto.id}
-                className="product-card"
+                className="product-card hover-lift"
+                style={{ animationDelay: `${index * 0.05}s` }}
               >
                 <div className="product-image-container">
                   {producto.imagen ? (
@@ -396,7 +398,7 @@ export default function TiendaDashboardCSS({ user, onShowLogin, onShowRegister, 
                   <button
                     onClick={() => handleAddToCart(producto.id)}
                     disabled={addingToCart === producto.id || producto.stock === 0}
-                    className={`add-to-cart-button ${
+                    className={`add-to-cart-button hover-lift ${
                       producto.stock === 0
                         ? 'disabled'
                         : addingToCart === producto.id

@@ -13,6 +13,8 @@ import {
 import { listProducts, createProduct, updateProduct, deleteProduct, listCategorias, createCategoria, updateCategoria, deleteCategoria } from '../api/products.js';
 import { listClients, getClient, getClientVentas, updateClient, deleteClient } from '../api/clients.js';
 import ImageUpload from '../components/ImageUpload.jsx';
+import HistorialVentas from '../components/HistorialVentas.jsx';
+import ReportesDinamicos from '../components/ReportesDinamicos.jsx';
 import './AdminDashboard.css';
 
 export default function AdminDashboard({ user, onLogout }) {
@@ -1707,7 +1709,17 @@ export default function AdminDashboard({ user, onLogout }) {
       case 'clientes':
         return renderClientes();
       case 'ventas':
-        return renderVentas();
+        return (
+          <main className="admin-main" style={{ padding: '0' }}>
+            <HistorialVentas />
+          </main>
+        );
+      case 'reportes':
+        return (
+          <main className="admin-main" style={{ padding: '0' }}>
+            <ReportesDinamicos />
+          </main>
+        );
       case 'categorias':
         return renderCategorias();
       default:
@@ -1860,26 +1872,7 @@ export default function AdminDashboard({ user, onLogout }) {
             </div>
           </div>
 
-          {/* Command Input - Reportes dinámicos */}
-          {(activeSection === 'reportes' || activeSection === 'predicciones') && (
-            <div className="admin-command-input">
-              <div className="admin-command-container">
-                <input
-                  type="text"
-                  placeholder="Escribe o habla tu consulta: 'Quiero un reporte de ventas de octubre en PDF' o 'Predice ventas de noviembre'"
-                  className="admin-command-field"
-                />
-                <Search className="admin-command-search-icon" />
-                <button
-                  onClick={toggleVoiceCommand}
-                  className={`admin-command-voice ${isListening ? 'admin-command-voice-active' : ''}`}
-                >
-                  <Mic className="admin-command-voice-icon" />
-                </button>
-              </div>
-              <p className="admin-command-hint">💡 Genera reportes dinámicos con texto o voz</p>
-            </div>
-          )}
+          {/* Reportes dinámicos ahora se manejan en el componente ReportesDinamicos */}
         </header>
 
         {/* Dynamic Content */}

@@ -91,8 +91,8 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: var(--tienda-blue-active);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #0066FF;
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.15);
 }
 
 .form-group input::placeholder {
@@ -107,7 +107,7 @@
 }
 
 .btn-primary {
-  background: var(--tienda-blue-active);
+  background: linear-gradient(135deg, #0066FF 0%, #06B6D4 100%);
   color: var(--tienda-text-white);
   border: none;
   padding: 12px 24px;
@@ -115,15 +115,17 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--tienda-transition);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
 }
 
 .btn-primary:hover {
-  background: var(--tienda-blue-hover);
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #06B6D4 0%, #00FF88 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 102, 255, 0.4);
 }
 
 .btn-primary:disabled {
@@ -149,8 +151,10 @@
 
 .btn-secondary:hover {
   background: var(--tienda-header-bg);
-  border-color: var(--tienda-blue-active);
-  color: var(--tienda-blue-active);
+  border-color: #0066FF;
+  color: #0066FF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.15);
 }
 
 .error-message,

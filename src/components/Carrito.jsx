@@ -114,8 +114,15 @@ export default function Carrito({ isOpen, onClose }) {
   if (!isOpen) return null
 
   return (
-    <div className="carrito-overlay" onClick={onClose}>
-      <div className="carrito-panel" onClick={e => e.stopPropagation()}>
+    <>
+      <div 
+        className="carrito-overlay animate-fade-in" 
+        onClick={onClose}
+      >
+        <div 
+          className="carrito-panel animate-scale-in" 
+          onClick={e => e.stopPropagation()}
+        >
         <div className="carrito-header">
           <h2>Mi Carrito</h2>
           <button onClick={onClose} className="close-btn" aria-label="Cerrar carrito">✕</button>
@@ -148,8 +155,12 @@ export default function Carrito({ isOpen, onClose }) {
                   <p>¡Agrega algunos productos!</p>
                 </div>
               ) : (
-                carrito.items.map(item => (
-                  <div key={item.id} className="cart-item">
+                carrito.items.map((item, index) => (
+                  <div 
+                    key={item.id} 
+                    className="cart-item animate-slide-in-right"
+                    style={{ animationDelay: `${index * 0.05}s` }}
+                  >
                     <div className="item-image">
                       {item.producto_imagen ? (
                         <img src={item.producto_imagen} alt={item.producto_nombre} />
@@ -168,16 +179,18 @@ export default function Carrito({ isOpen, onClose }) {
                         <button 
                           onClick={() => handleUpdateQuantity(item.id, item.cantidad - 1)}
                           disabled={loading || item.cantidad <= 1}
-                          className="qty-btn"
+                          className="qty-btn hover-lift"
                           aria-label="Reducir cantidad"
                         >
                           −
                         </button>
-                        <span className="quantity">{item.cantidad}</span>
+                        <span className="quantity animate-scale-in">
+                          {item.cantidad}
+                        </span>
                         <button 
                           onClick={() => handleUpdateQuantity(item.id, item.cantidad + 1)}
                           disabled={loading}
-                          className="qty-btn"
+                          className="qty-btn hover-lift"
                           aria-label="Aumentar cantidad"
                         >
                           +
@@ -193,7 +206,7 @@ export default function Carrito({ isOpen, onClose }) {
                       <button 
                         onClick={() => handleSaveForLater(item.id)}
                         disabled={loading}
-                        className="save-btn"
+                        className="save-btn hover-lift"
                         title="Guardar para más tarde"
                         aria-label="Guardar para más tarde"
                       >
@@ -202,7 +215,7 @@ export default function Carrito({ isOpen, onClose }) {
                       <button 
                         onClick={() => handleRemoveItem(item.id)}
                         disabled={loading}
-                        className="remove-btn"
+                        className="remove-btn hover-lift"
                         title="Eliminar del carrito"
                         aria-label="Eliminar del carrito"
                       >
@@ -264,9 +277,9 @@ export default function Carrito({ isOpen, onClose }) {
                   )}
                 </div>
 
-                <div className="carrito-footer">
+                <div className="carrito-footer animate-slide-up">
                   <button 
-                    className="btn-primary btn-large"
+                    className="btn-primary btn-large hover-lift"
                     onClick={() => setShowCheckout(true)}
                   >
                     <span>🛒</span>
@@ -277,6 +290,7 @@ export default function Carrito({ isOpen, onClose }) {
             )}
           </>
         )}
+        </div>
       </div>
 
       {/* Modal de Checkout */}
@@ -301,6 +315,6 @@ export default function Carrito({ isOpen, onClose }) {
           onClose()
         }}
       />
-    </div>
+    </>
   )
 }

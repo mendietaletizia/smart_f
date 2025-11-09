@@ -2,14 +2,19 @@
    ADMIN DASHBOARD - ESTILO EXACTO DE LA IMAGEN
    =========================================== */
 
-/* Variables CSS basadas en la imagen */
+/* Variables CSS - Colores vibrantes y dinámicos (sin rosa/lila) */
 :root {
   --admin-sidebar-bg: #1A2035;
   --admin-header-bg: #F8FAFC;
   --admin-main-bg: #F8FAFC;
   --admin-card-bg: #FFFFFF;
-  --admin-blue-active: #3B82F6;
+  --admin-blue-active: #2563EB;
+  --admin-blue-electric: #0066FF;
   --admin-blue-light: #DBEAFE;
+  --admin-cyan: #06B6D4;
+  --admin-cyan-bright: #00D9FF;
+  --admin-emerald: #10B981;
+  --admin-emerald-bright: #00FF88;
   --admin-text-primary: #1F2937;
   --admin-text-secondary: #6B7280;
   --admin-text-white: #FFFFFF;
@@ -17,11 +22,12 @@
   --admin-green: #22C55E;
   --admin-red: #EF4444;
   --admin-border: #E5E7EB;
-  --admin-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  --admin-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  --admin-radius: 8px;
-  --admin-radius-lg: 12px;
-  --admin-transition: all 0.2s ease;
+  --admin-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+  --admin-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --admin-shadow-glow: 0 0 20px rgba(0, 102, 255, 0.3);
+  --admin-radius: 12px;
+  --admin-radius-lg: 16px;
+  --admin-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --admin-gap-sm: 8px;
   --admin-gap: 16px;
   --admin-gap-lg: 24px;
@@ -33,11 +39,15 @@
 
 .admin-container {
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
   background: var(--admin-main-bg);
   display: flex;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* ===========================================
@@ -76,11 +86,13 @@
 }
 
 .admin-logo-icon {
-  background: var(--admin-blue-active);
+  background: linear-gradient(135deg, var(--admin-blue-electric) 0%, var(--admin-cyan-bright) 50%, var(--admin-emerald-bright) 100%);
   padding: 10px;
   border-radius: var(--admin-radius);
-  box-shadow: var(--admin-shadow);
+  box-shadow: var(--admin-shadow-glow);
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
 }
 
 .admin-logo-svg {
