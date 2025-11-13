@@ -295,7 +295,11 @@ function AppRouterContent({ user, onLogin, onLogout, message, showRegister, setS
             onSuccess={(newUser) => {
               // Auto-login realizado por backend. Reflejamos el estado en el frontend y vamos a Mi Cuenta.
               if (setUser) setUser(newUser)
-              navigate('/cliente')
+              if ((newUser?.rol || '').toLowerCase() === 'administrador') {
+                navigate('/admin')
+              } else {
+                navigate('/cliente')
+              }
             }}
           />
         } 
